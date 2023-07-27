@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../vue.js"></script>
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+    <!-- 引入layui -->
+    <link rel="stylesheet" href="https://unpkg.com/layui@2.6.8/dist/css/layui.css">
+    <script src="https://unpkg.com/layui@2.6.8/dist/layui.js"></script>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <div id="boxs">
+        <div id="js_box">
+            <input type="text" v-model="display">
+            <div class="bubox">
+                <button><svg t="1690374121588" class="icon" viewBox="0 0 1026 1024" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" p-id="12980" width="20" height="20">
+                        <path
+                            d="M968.704 197.632q23.552 0 38.912 15.36t15.36 36.864l0 528.384q0 21.504-15.36 36.864t-38.912 15.36l-655.36 0-1.024 0-2.048 0q-5.12 0-14.848-2.048t-14.848-6.144l-1.024-1.024-1.024-1.024-262.144-257.024 0-1.024q-18.432-15.36-18.432-48.128 0-15.36 4.608-27.648t12.8-20.48l262.144-256q2.048-2.048 10.24-6.144 10.24-6.144 25.6-6.144l655.36 0zM834.56 658.432q9.216-14.336 3.072-25.6t-20.48-25.6q-17.408-17.408-47.616-45.056t-65.024-59.392q37.888-35.84 69.632-66.56t49.152-48.128q12.288-11.264 12.288-26.112t-13.312-26.112q-2.048-2.048-6.144-5.632t-6.144-4.608q-14.336-9.216-28.16-7.168t-25.088 13.312q-17.408 17.408-49.152 47.104t-67.584 63.488q-31.744-29.696-58.88-55.808t-44.544-43.52q-19.456-20.48-34.816-23.552t-27.648 4.096q-2.048 2.048-9.728 7.168t-9.728 7.168q-13.312 11.264-8.704 28.16t30.208 42.496q16.384 15.36 43.008 40.448t57.344 54.784q-32.768 30.72-60.416 56.832t-45.056 43.52q-14.336 13.312-23.04 29.696t1.536 29.696q2.048 2.048 8.704 8.192t8.704 8.192q14.336 11.264 32.256 7.68t35.328-20.992 45.056-44.544 60.416-57.856q34.816 32.768 64.512 60.928t48.128 46.592q13.312 12.288 30.72 16.384t28.672-4.096l4.096-4.096t7.68-8.704 6.656-8.192 4.096-4.608z"
+                            p-id="12981" fill="#000000"></path>
+                    </svg></button>
+                <button @click="clear" style="font-size: 20px;">C</button>
+
+                <button @click="appendNumber(index)" v-for="(item,index) in numbers" :key="index">{{item}}</button>
+                <!-- {{numbers}} -->
+
+            </div>
+            <div class="jsbox">
+                <button @click="appendOperator(index)" v-for=" (item,index) in operators"
+                    :key="index">{{item=='/'?'%':item}}</button>
+            </div>
+            <button @click="calculate"
+                style="background-color: #0067c0;color: white;border: none;border-radius: 5px;width: 77%;margin-left: 6px; height: 50px;font-size: 30px;">=</button>
+        </div>
+        <div id="box">
+            <div id="nav_box">
+            </div>
+            <div id="con_box">
+                <svg class="fh" @click="fhfun" t="1690369707959" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                    xmlns="http://www.w3.org/2000/svg" p-id="9925" width="24" height="24">
+                    <path
+                        d="M883.8 641.4 440 641.4l96 98.4c49 50 49 131.4 0 181.4-49 50.2-128.2 50.2-177.2 0L48.8 603.8c-49-50.2-49-131.4 0-181.4L358.8 104.8c49-50.2 128.2-50.2 177.2 0 49 50.2 49 131.4 0 181.4l-98 100.4 445.8 0c68.8 0 124.4 57 124.4 127.4C1008.2 584.4 952.6 641.4 883.8 641.4z"
+                        fill="#515151" p-id="9926"></path>
+                </svg>
+                <input type="text" @keydown.13="souFun" placeholder="请输入搜索的名称" id="sou_inp">
+                <button @click="souFun()" class="layui-btn" style="height:32px;line-height: 32px;">搜索</button>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <td style="width: 30px;text-align: center;">#</td>
+                            <td>名称</td>
+                            <td>链接</td>
+                            <td>描述</td>
+                            <td style="width: 200px;">操作</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr :class="flag==index?'scolor':''" v-for="(item,index) in listarr" :key="index"
+                            @mouseenter="enter(index)" @mouseleave="leave()">
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.url}}</td>
+                            <td>{{item.content}}</td>
+                            <td>
+                                <button @click="delFun(item.id-1)"
+                                    class="layui-btn layui-btn-sm layui-btn-danger">删除</button>
+                                <button @click="chaFun(item.id-1)" class="layui-btn layui-btn-sm">查看</button>
+                                <button @click="xiuFun(item.id-1)" class="layui-btn layui-btn-sm"
+                                    style="background-color: rgb(211, 179, 35);">修改</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button @click="tansFun()" class="layui-btn layui-btn-lg layui-btn-normal">添加</button>
+            </div>
+            <!-- 添加 -->
+            <div id="tian_box">
+                <h3>添加信息</h3>
+                名称：<input type="text" id="name"><br>
+                链接：<input type="text" id="url"><br>
+                描述：<input type="text" id="con"><br>
+                <button class="layui-btn" @click="snone()">取消</button>
+                <button class="layui-btn" @click="tianFun()">确定</button>
+            </div>
+            <!-- 修改 -->
+            <div id="xiu_box">
+                <h3>修改信息</h3>
+                名称：<input type="text" id="xiu_name"><br>
+                链接：<input type="text" id="xiu_url"><br>
+                描述：<input type="text" id="xiu_con"><br>
+                <button class="layui-btn" @click="ynone()">取消</button>
+                <button class="layui-btn" @click="qrxiuFun()">确定</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    //热搜
+    var sindex = 0, aarr = [
+        {
+            id: "1",
+            name: "哔哩哔哩",
+            content: 'billbill',
+            url: 'https://www.billbill.com/'
+        },
+        {
+            id: "2",
+            name: "今日头条",
+            content: 'toutiao',
+            url: 'https://www.toutiao.com/'
+        },
+        {
+            id: "3",
+            name: "百度",
+            url: 'https://www.baidu.com/',
+            content: 'jfhgaswfkaw'
+        },
+        {
+            id: "4",
+            name: "腾讯网",
+            url: 'wwww.qq.com/',
+            content: 'tawktkawjtwa'
+        },
+        {
+            id: "5",
+            name: "新浪微博",
+            url: 'https://www.weibo.com/',
+            content: 'xinlangweibo'
+        },
+        {
+            id: "6",
+            name: "爱奇艺",
+            url: 'https://www.iqy.com/',
+            content: 'aiqiyishipinapp'
+        }
+    ]
+
+    let a = new Vue({
+        el: '#boxs',
+        data() {
+            return {
+                listarr: [
+                    {
+                        id: "1",
+                        name: "哔哩哔哩",
+                        content: 'billbill',
+                        url: 'https://www.billbill.com/'
+                    },
+                    {
+                        id: "2",
+                        name: "今日头条",
+                        content: 'toutiao',
+                        url: 'https://www.toutiao.com/'
+                    },
+                    {
+                        id: "3",
+                        name: "百度",
+                        url: 'https://www.baidu.com/',
+                        content: 'jfhgaswfkaw'
+                    },
+                    {
+                        id: "4",
+                        name: "腾讯网",
+                        url: 'wwww.qq.com/',
+                        content: 'tawktkawjtwa'
+                    },
+                    {
+                        id: "5",
+                        name: "新浪微博",
+                        url: 'https://www.weibo.com/',
+                        content: 'xinlangweibo'
+                    },
+                    {
+                        id: "6",
+                        name: "爱奇艺",
+                        url: 'https://www.iqy.com/',
+                        content: 'aiqiyishipinapp'
+                    }
+                ],
+                flag: -1,
+                souarr: null,
+                numbers: [1, 2, 3, 4, 5, 6, 7, 8, 9, 0],
+                operators: ['+', '-', '*', '/'],
+                display: '0'
+            }
+        },
+        methods: {
+
+            appendNumber(index) {
+                if (this.display == '0') {
+                    this.display = ''
+                }
+                this.display += this.numbers[index]
+                console.log(this.display);
+            },
+            appendOperator(index) {
+                this.display += this.operators[index]
+                console.log(this.display);
+            },
+            calculate() {
+                try {
+                    this.display = eval(this.display);
+                } catch (error) {
+                    this.display = '错误';
+                }
+            },
+            clear() {
+                this.display = '0';
+            },
+
+            //删除
+            delFun(index) {
+                if (confirm('确定删除吗？')) {
+                    this.listarr.splice(index, 1)
+                    tanFun('删除成功')
+                }
+            },
+            tianFun() {
+                $('#tian_box').css('display', 'block')
+            },
+            //查看
+            chaFun(index) {
+                console.log(this.listarr);
+                layer.open({
+                    type: 0,
+                    title: '信息',
+                    content: `
+                     名称：<p>${this.listarr[index].name}</p><br>
+                     链接：<p>${this.listarr[index].url}</p><br>
+                     描述：<p>${this.listarr[index].content}</p>
+                    `
+                })
+            },
+            //搜索
+            souFun() {
+                // $('#sou_inp').val()
+                this.souarr = aarr.filter((item) => {
+                    return item.name.includes($('#sou_inp').val())
+                })
+                if ($('#sou_inp').val().length == 0) {
+                    tanFun('请输入你要搜索的内容')
+                    // console.log(111);
+                } else {
+                    this.listarr = this.souarr
+                }
+            },
+            fhfun() {
+                this.listarr = aarr
+                // console.log(this.twoarr);
+            },
+            //弹出添加框 
+            tansFun() {
+                $('#tian_box').css('display', 'block')
+            },
+            //确认添加
+            tianFun() {
+                $('#tian_box').css('display', 'block')
+                let apparr = {
+                    id: this.listarr.length + 1,
+                    name: $('#name').val(),
+                    url: $('#url').val(),
+                    content: $('#con').val()
+                }
+                this.listarr.push(apparr)
+                $('#tian_box').css('display', 'none')
+                tanFun('添加成功！')
+                $('#name').val(''),
+                    $('#url').val(''),
+                    $('#con').val('')
+            },
+            //取消
+            snone() {
+                $('#name').val('')
+                $('#url').val('')
+                $('#con').val('')
+                $('#tian_box').css('display', 'none')
+            },
+            // 取消修改
+            ynone() {
+                $('#xiu_name').val('')
+                $('#xiu_url').val('')
+                $('#xiu_con').val('')
+                $('#xiu_box').css('display', 'none')
+            },
+            // 点击修改
+            xiuFun(index) {
+                sindex = index
+                $('#xiu_box').css('display', 'block')
+                $('#xiu_name').val(this.listarr[index].name)
+                $('#xiu_url').val(this.listarr[index].url)
+                $('#xiu_con').val(this.listarr[index].content)
+            },
+            qrxiuFun() {
+                this.listarr[sindex].name = $('#xiu_name').val()
+                this.listarr[sindex].url = $('#xiu_url').val()
+                this.listarr[sindex].content = $('#xiu_con').val()
+                $('#xiu_box').css('display', 'none')
+                tanFun('修改成功！')
+            },
+            //鼠标移上
+            enter(index) {
+                this.flag = index
+            },
+            leave() {
+                this.flag = -1
+            }
+
+        }
+    })
+    function tanFun(con) {
+        layer.msg(`${con}`, function () {
+            icon: 1;
+        });
+    }
+</script>
+
+</html>

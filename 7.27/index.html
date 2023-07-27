@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    .hover {
+        background-color: #ffa500 !important;
+    }
+</style>
+
+<body>
+    <div id="box">
+        姓名：<input type="text" v-model="name" placeholder="请输入名称">
+        性别：<select v-model="sex">
+            <option value="男">男</option>
+            <option value="女">女</option>
+        </select>
+        年龄：<input type="number" v-model="age">
+        <button @click="add">提交</button>&emsp;<button @click="qrxiu">确认修改</button><br>
+        <br><select v-model="ziduan">
+            <option value="请选择一个排序字段">请选择一个排序字段</option>
+            <option value="ID">ID</option>
+            <option value="年龄">年龄</option>
+        </select>
+        <select v-model="shunxu">
+            <option value="请选择一个排序顺序">请选择一个排序顺序</option>
+            <option value="升序">升序</option>
+            <option value="降序">降序</option>
+        </select>
+        <button @click="sort">点击排序</button><br><br>
+        <table border="1" style="width: 99vw;">
+            <thead style="height: 40px;">
+                <tr>
+                    <th>
+                        全选<input type="checkbox" @change="all">
+                    </th>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        姓名
+                    </th>
+                    <th>
+                        年龄
+                    </th>
+                    <th>
+                        男女
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-color="index" @mouseover="shang(index)" @mouseleave="xia" :class="trindex==index?'hover':''"
+                    style="height: 40px;text-align: center;" v-for="(item,index) in arr" :key="index">
+                    <td><input type="checkbox" :checked="item.flag" @click="danfun(index)"></td>
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.age}}</td>
+                    <td>{{item.sex}}</td>
+                    <td>
+                        <button @click="del(index)">删除</button>
+                        <button @click="xiu(index)">修改</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+<script src="../vue.js"></script>
+
+<script>
+    new Vue({
+        el: '#box',
+        data: {
+            name: '',
+            sex: '男',
+            age: '',
+            ziduan: '请选择一个排序字段',
+            shunxu: '请选择一个排序顺序',
+            arr: [
+                {
+                    id: 2,
+                    flag: false,
+                    name: '小刚',
+                    age: '19',
+                    sex: '男'
+                },
+                {
+                    id: 1,
+                    flase: false,
+                    name: '小红',
+                    age: '18',
+                    sex: '女'
+                },
+                {
+                    id: 3,
+                    false: false,
+                    name: '小明',
+                    age: '21',
+                    sex: '男'
+                },
+
+            ],
+            index: -1,
+            trindex: -1,
+            allflag: false
+        },
+        directives: {
+            color(i, n) {
+                if (n.value % 2 == 0) {
+                    i.style.backgroundColor = '#ffc0cb'
+                } else {
+                    i.style.backgroundColor = '#ffff00'
+                }
+            }
+        },
+        watch: {
+            arr(newVal, oldVal) {
+                // 监听 myArray 属性的变化
+                console.log('myArray 的值发生了变化：', newVal, oldVal);
+            },
+            deep: true
+        },
+        methods: {
+            danfun(index) {
+                this.arr[index].flag = !this.arr[index].flag;
+                this.arr.forEach((item, index) => {
+                    console.log(item.flag);
+                    // if (item.flag == false) {
+                    //     this.allflag = false
+                    // } else {
+                    //     this.allflag = true
+                    // }
+                })
+            },
+            sort() {
+                if (this.ziduan.length != 2 || this.shunxu.length != 2) {
+                    alert('请正确选择排序方式')
+                } else {
+                    if (this.ziduan == 'ID' && this.shunxu == '升序') {
+                        this.arr.sort((a, b) => {
+                            return b.id - a.id;
+                        })
+                    } else if (this.ziduan == 'ID' && this.shunxu == '降序') {
+                        this.arr.sort((a, b) => {
+                            return a.id - b.id;
+                        })
+                    } else if (this.ziduan == '年龄' && this.shunxu == '降序') {
+                        this.arr.sort((a, b) => {
+                            return a.age - b.age;
+                        })
+                    } else if (this.ziduan == '年龄' && this.shunxu == '升序') {
+                        this.arr.sort((a, b) => {
+                            return b.age - a.age;
+                        })
+                    }
+                }
+            },
+
+            all() {
+                this.allflag = !this.allflag
+                this.arr.forEach((item, index) => {
+                    item.flag = this.allflag
+                })
+            },
+            shang(index) {
+                // console.log(index);
+                this.trindex = index;
+
+            },
+            xia() {
+                this.trindex = -1
+            },
+            xiu(index) {
+                this.index = index
+                this.name = this.arr[index].name
+                this.age = this.arr[index].age
+                this.sex = this.arr[index].sex
+            },
+            qrxiu() {
+                if (confirm('确定要修改此项数据吗')) {
+                    this.arr[this.index].name = this.name
+                    this.arr[this.index].age = this.age
+                    this.arr[this.index].sex = this.sex
+                    this.name = ''
+                    this.age = ''
+                }
+
+            },
+            del(index) {
+                if (confirm('确认删除吗？')) {
+                    this.arr.splice(index, 1)
+                }
+
+            },
+            add() {
+                if (this.name == '' || this.age == '') {
+                    alert('添加不能为空')
+                } else {
+                    let obj = {
+                        name: this.name,
+                        age: this.age,
+                        sex: this.sex
+                    }
+                    this.arr.push(obj)
+                }
+            }
+        }
+    })
+</script>
+
+</html>

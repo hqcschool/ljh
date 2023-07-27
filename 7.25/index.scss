@@ -1,0 +1,171 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+
+
+#js_box{
+    margin-top: 20px;
+    width: 300px;
+    height: 350px;
+    padding-right: 6px;
+    // background: rgb(185, 183, 183);
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .4);
+    margin: auto;
+    input{
+        border: none;
+        width: 95%;
+        margin-top: 20px;
+        padding: 16px 5% 26px 0px;
+        outline-style: none;
+        text-align: right;
+        font-size: 30px;
+        font-weight: bold;
+    }
+    .bubox{
+        float: left;
+        width: 80%;
+        height: 180px;
+        display: flex;
+        flex-wrap: wrap;
+        // justify-content: space-between;
+        button{
+            width: 52px;
+            height: 52px;
+            // height: 30px;
+            margin-left: 7px;
+            padding: 10px;
+            font-weight: bold;
+            font-size: 17px;
+        }
+    }
+    .jsbox{
+        float: right;
+        // background-color: 20%;
+        width: 20%;
+        height: 240px;
+        display: flex;
+        flex-wrap: wrap;
+        button {
+                width: 52px;
+                height: 52px;
+                // height: 30px;
+                margin-left: 7px;
+                padding: 10px;
+                font-weight: bold;
+                justify-content: space-between;
+                font-size: 17px;
+            }
+    }
+}
+
+
+#box {
+    margin: auto;
+    width: 1400px;
+    // height: 370px;
+
+    #nav_box {
+        width: 1400px;
+        height: 50px;
+    }
+
+    #con_box {
+        width: 100%;
+        height: 580px;
+        position: relative;
+        .fh{
+            padding-right:5px;
+            position: relative;
+            top: 5px;
+        }
+        .fh:hover{
+            path{
+                fill: #33a0d6;
+            }
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+
+            thead {
+                tr {
+                    background-image: linear-gradient(to right, #33a0d6, #6ab6c2, #7abcbc);
+                    color: white;
+                    height: 40px;
+
+                    td {
+                        text-align: center;
+                    }
+                }
+            }
+
+            tbody {
+                width: 100%;
+
+                tr {
+                    height: 40px !important;
+
+                    td {
+                        text-align: center;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.tab_li {
+    background-color: white !important;
+    color: #0068be;
+}
+
+#tian_box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    height: 300px;
+    background-color: #74babe;
+    border-radius: 20px;
+    color: white;
+    font-size: 20px;
+    padding: 20px;
+    display: none;
+
+    input {
+        width: 200px;
+        height: 30px;
+        border-radius: 10px;
+        font-size: 14px;
+        margin-top: 40px;
+        text-indent: 2px;
+        border: none;
+        
+    }
+
+    button {
+        margin-top: 20px;
+        margin-left: 60px;
+    }
+}
+
+#xiu_box {
+    @extend #tian_box;
+    // display: block;
+}
+
+.scolor {
+    background-color: rgba(148, 208, 231, .2);
+}
+
+#sou_inp {
+    width: 300px;
+    height: 30px;
+    text-indent: 10px;
+    margin-bottom: 2px;
+}
