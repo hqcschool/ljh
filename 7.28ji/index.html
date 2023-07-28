@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+    <div id="box">
+        <ul id="one">
+            <li v-for="(item,index) in list" :key="index" @dblclick="add(index)">
+                <img :src="item.img">
+                <p>
+                    <span>特卖价</span>
+                    <b>￥{{Math.floor(item.price /10 *item.zhe)}}</b>
+                    <a style="text-decoration: line-through;margin-left: 6px;">￥{{item.price}}</a>
+                    <a>{{item.zhe}}折</a>
+                </p>
+                <div>
+                    {{item.content.length>26? item.content.substring(0,27)+'...':item.content}}
+                </div>
+            </li>
+        </ul>
+        <div id="two">
+            <h3>特卖商品<b>{{this.time }}</b><span></span></h3>
+            <div class="two_con">
+                <div class="con_one">
+                    <span>商品</span>
+                    <span>单价</span>
+                    <span>数量</span>
+                    <span>操作</span>
+                </div>
+                <ul>
+                    <li v-for="(item,index) in newList" :key="index">
+                        <div>
+                            <input type="checkbox" @change="liflag(index)" :checked="item.flag==true?true:false">
+                            <img :src="item.img" alt="">
+                            <span>{{item.content}}</span>
+                        </div>
+                        <div>
+                            <span>￥{{item.price}}</span>
+                        </div>
+                        <div>
+                            <button @click="jian(index)">-</button>
+                            <span>{{item.i}}</span>
+                            <button @click=" jia(index)">+</button>
+                        </div>
+                        <div>
+                            <svg @click="del(index)" t="1690535087108" class="icon" viewBox="0 0 1024 1024"
+                                version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2338" width="20" height="20">
+                                <path
+                                    d="M607.897867 768.043004c-17.717453 0-31.994625-14.277171-31.994625-31.994625L575.903242 383.935495c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 351.94087C639.892491 753.593818 625.61532 768.043004 607.897867 768.043004z"
+                                    fill="#575B66" p-id="2339"></path>
+                                <path
+                                    d="M415.930119 768.043004c-17.717453 0-31.994625-14.277171-31.994625-31.994625L383.935495 383.935495c0-17.717453 14.277171-31.994625 31.994625-31.994625 17.717453 0 31.994625 14.277171 31.994625 31.994625l0 351.94087C447.924744 753.593818 433.647573 768.043004 415.930119 768.043004z"
+                                    fill="#575B66" p-id="2340"></path>
+                                <path
+                                    d="M928.016126 223.962372l-159.973123 0L768.043004 159.973123c0-52.980346-42.659499-95.983874-95.295817-95.983874L351.94087 63.989249c-52.980346 0-95.983874 43.003528-95.983874 95.983874l0 63.989249-159.973123 0c-17.717453 0-31.994625 14.277171-31.994625 31.994625s14.277171 31.994625 31.994625 31.994625l832.032253 0c17.717453 0 31.994625-14.277171 31.994625-31.994625S945.73358 223.962372 928.016126 223.962372zM319.946246 159.973123c0-17.545439 14.449185-31.994625 31.994625-31.994625l320.806316 0c17.545439 0 31.306568 14.105157 31.306568 31.994625l0 63.989249L319.946246 223.962372 319.946246 159.973123 319.946246 159.973123z"
+                                    fill="#575B66" p-id="2341"></path>
+                                <path
+                                    d="M736.048379 960.010751 288.123635 960.010751c-52.980346 0-95.983874-43.003528-95.983874-95.983874L192.139761 383.591466c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 480.435411c0 17.717453 14.449185 31.994625 31.994625 31.994625l448.096758 0c17.717453 0 31.994625-14.277171 31.994625-31.994625L768.215018 384.795565c0-17.717453 14.277171-31.994625 31.994625-31.994625s31.994625 14.277171 31.994625 31.994625l0 479.231312C832.032253 916.835209 789.028725 960.010751 736.048379 960.010751z"
+                                    fill="#575B66" p-id="2342"></path>
+                            </svg>
+                        </div>
+                    </li>
+
+                </ul>
+                <div class="js_box">
+                    <div class="js_one">
+                        <select v-model="yhj">
+                            <option value="不使用优惠卷">不使用优惠卷</option>
+                            <option value="五元优惠卷">五元优惠卷</option>
+                            <option value="十元优惠卷">十元优惠卷</option>
+                            <option value="十五元优惠卷">十五元优惠卷</option>
+                        </select>
+                        <div>
+                            <li>
+                                <p>共
+                                    <a style="padding: 0 3px;">{{numfun}}</a>件商品&emsp;商品金额：
+                                </p>
+                                <span>￥{{sfun}}</span>
+                            </li>
+                            <li>
+                                总金额&emsp;<u style="color: red;" v-text="bhyhj?'(使用优惠卷)':'(不使用优惠卷)'"></u>
+                                <span style="margin-left:70px;color: #dd307f;">￥{{sumfun}}</span>
+                            </li>
+                        </div>
+                    </div>
+                    <div class="js_two">
+                        <a>请在倒计时结束前结算</a>
+                        <button @click="fun">立即结算 <span>{{this.time }}</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="../vue.js"></script>
+<script>
+    new Vue({
+        el: '#box',
+        data: {
+            list: [
+                {
+                    img: 'https://img11.360buyimg.com/n7/jfs/t1/87775/22/42010/46982/64a91d29F5e70cd50/01259f1789e681ef.jpg',
+                    price: 129,
+                    content: '卡吉蘭娜新款潮流女装，品质保证，赠送运费险，七天无理由退换，售后无忧，放心购！',
+                    num: 3,
+                    flag: false,
+                    //特卖颜色class
+                    te: 'red',
+                    i: 1,
+                    zhe: 8,
+                },
+                {
+                    img: 'https://img12.360buyimg.com/n7/jfs/t1/84568/18/21557/79533/62e28bc6E55578104/921c35fede1b6c3a.jpg',
+                    price: 89,
+                    content: '新款运动风休闲女士半袖上衣 白色圆领：Samanlhn羽毛 XL 115-125斤',
+                    num: 2,
+                    flag: false,
+                    //特卖颜色class
+                    te: 'red',
+                    i: 1,
+                    zhe: 6,
+                },
+                {
+                    img: 'https://img13.360buyimg.com/n7/jfs/t1/72960/40/22619/81122/641421c3F5254731f/0fc7dad0254cc0b6.jpg',
+                    price: 129,
+                    content: '2023最火欧若婷雅新款连衣裙',
+                    num: 3,
+                    flag: false,
+                    //特卖颜色class
+                    te: 'red',
+                    i: 1,
+                    zhe: 8.3,
+                },
+                {
+                    img: 'https://img14.360buyimg.com/n7/jfs/t1/98572/38/37633/113317/640157faF0721fde6/f0bc68f597675e9d.jpg',
+                    price: 79,
+                    content: '【百褶裙】高腰收腹显瘦半身裙a字jk短裙 灰色 M91-105斤 ',
+                    num: 1,
+                    flag: false,
+                    //特卖颜色class
+                    te: 'red',
+                    i: 1,
+                    zhe: 9,
+                },
+                {
+                    img: 'https://img10.360buyimg.com/n7/jfs/t1/1947/8/21150/36116/643e5ca8F4d425857/c0506c79d52d48dd.jpg',
+                    price: 198,
+                    content: '女生裙子夏天2023法式高级感气质显瘦仙女中长裙 米白色 均码',
+                    num: 2,
+                    flag: false,
+                    //特卖颜色class
+                    te: 'red',
+                    i: 1,
+                    zhe: 6,
+                },
+
+            ],
+            newList: [],
+            yhj: '不使用优惠卷',
+            bhyhj: false,
+            sum: 0,
+            targetTime: null,
+            time: '',
+            timeflag: true
+
+
+        },
+        beforeMount() {
+            // 获取当前时间
+            const now = new Date();
+
+            // 计算目标时间：当前时间加上二十分钟的毫秒数
+            this.targetTime = new Date(now.getTime() + 1 * 60 * 1000);
+
+            // 每秒钟更新倒计时
+            setInterval(() => {
+                this.date()
+            }, 1000);
+        },
+        computed: {
+            numfun() {
+                let num = 0
+                this.newList.filter((item, index) => {
+                    if (item.flag) {
+                        num++
+                    }
+                })
+                return num
+            },
+            sumfun() {
+                let sum = 0
+                this.newList.filter((item, index) => {
+                    if (item.flag) {
+                        sum += item.price * item.i
+                    }
+                })
+                if (sum > 20) {
+                    switch (this.yhj) {
+                        case '五元优惠卷':
+                            sum -= 5
+                            this.bhyhj = true
+                            break;
+                        case '十元优惠卷':
+                            sum -= 10
+                            this.bhyhj = true
+                            break;
+                        case '十五元优惠卷':
+                            sum -= 15
+                            this.bhyhj = true
+                            break;
+                        case '不使用优惠卷':
+                            this.bhyhj = false
+                            break;
+
+                        default:
+                            break;
+                    }
+                }
+                this.sum = sum
+                return sum
+            },
+            sfun() {
+                let sum = 0
+                this.newList.filter((item, index) => {
+                    if (item.flag) {
+                        sum += item.price * item.i
+                    }
+                })
+                return sum
+            }
+        },
+        methods: {
+            date() {
+                if (!this.timeflag) {
+                    this.newList.filter((item, index) => {
+                        if (item.flag == true) {
+                            this.newList.splice(index, 1)
+                        }
+                    })
+                    return
+                }
+                // 获取当前时间
+                const currentTime = new Date();
+
+                // 计算剩余时间：目标时间减去当前时间的毫秒数
+                const remainingTime = this.targetTime - currentTime;
+
+                // 计算剩余时间的分钟数和秒数
+                const minutes = Math.floor(remainingTime / 1000 / 60);
+                const seconds = Math.floor((remainingTime / 1000) % 60);
+
+                // 格式化分钟数和秒数，确保显示为两位数
+                const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+                const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
+
+                // 返回格式化后的倒计时字符串
+                this.time = formattedMinutes + ":" + formattedSeconds
+                if (this.time == '00:00') {
+                    this.timeflag = false
+                }
+
+            },
+            fun() {
+                alert('请您支付' + this.sum + '元')
+            },
+            liflag(index) {
+                this.newList[index].flag = !this.newList[index].flag
+                const now = new Date();
+                this.targetTime = new Date(now.getTime() + 1 * 60 * 1000);
+            },
+            jia(index) {
+                if (this.newList[index].i + 1 <= this.newList[index].num) {
+                    this.newList[index].i++
+                } else {
+                    alert('库存不够了')
+                }
+            },
+            jian(index) {
+                if (this.newList[index].i + 1 > this.newList[index].num) {
+                    this.newList[index].i--
+                } else {
+                    if (confirm('确定要移除此物品吗?')) {
+                        this.newList.splice(index, 1)
+                    }
+                }
+            },
+            add(index) {
+                let obj = {
+                    img: this.list[index].img,
+                    price: this.list[index].price,
+                    content: this.list[index].content,
+                    num: this.list[index].num,
+                    flag: this.list[index].flag,
+                    //特卖颜色class
+                    i: this.list[index].i,
+                    te: this.list[index].te,
+                    zhe: this.list[index].te,
+                }
+                this.newList.unshift(obj);
+                const now = new Date();
+                this.targetTime = new Date(now.getTime() + 1 * 60 * 1000);
+            },
+            del(index) {
+                if (confirm('确定要删除吗?')) {
+                    this.newList.splice(index, 1);
+                }
+            }
+        }
+    })
+</script>
+
+</html>
