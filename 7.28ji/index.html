@@ -167,7 +167,8 @@
             sum: 0,
             targetTime: null,
             time: '',
-            timeflag: true
+            timeflag: true,
+            addflag: true
 
 
         },
@@ -291,18 +292,33 @@
                 }
             },
             add(index) {
-                let obj = {
-                    img: this.list[index].img,
-                    price: this.list[index].price,
-                    content: this.list[index].content,
-                    num: this.list[index].num,
-                    flag: this.list[index].flag,
-                    //特卖颜色class
-                    i: this.list[index].i,
-                    te: this.list[index].te,
-                    zhe: this.list[index].te,
+                this.newList.some((item) => {
+                    if (item.price === this.list[index].price) {
+                        this.addflag = false
+                        if (item.i <= item.num) {
+                            item.i++
+                        } else {
+                            alert('库存不够了')
+                        }
+                    } else {
+                        this.addflag = false
+                    }
+                });
+                if (this.addflag) {
+                    let obj = {
+                        img: this.list[index].img,
+                        price: this.list[index].price,
+                        content: this.list[index].content,
+                        num: this.list[index].num,
+                        flag: this.list[index].flag,
+                        //特卖颜色class
+                        i: this.list[index].i,
+                        te: this.list[index].te,
+                        zhe: this.list[index].te,
+                    }
+                    this.newList.unshift(obj);
                 }
-                this.newList.unshift(obj);
+
                 const now = new Date();
                 this.targetTime = new Date(now.getTime() + 1 * 60 * 1000);
             },
