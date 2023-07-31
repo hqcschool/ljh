@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./index.css">
+</head>
+<style lang="scss">
+    /* * {
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        background-color: #f5f5f5;
+    }
+
+    h2 {
+        text-align: center;
+        color: #ead7d7;
+        font-size: 90px;
+        font-weight: normal;
+    }
+
+    ul {
+        margin: auto;
+        width: 550px;
+        background-color: black;
+        list-style: none;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .12), 0 3px 10px rgba(0, 0, 0, .08);
+    }
+
+    li {
+        width: 100%;
+        height: 35px;
+        padding: 15px 0;
+        background-color: #fefefe;
+    }
+
+    li {
+        display: flex;
+        align-items: center;
+        border-bottom: 2px solid #f2f2f2;
+        font-size: 20px;
+        position: relative;
+    }
+
+
+
+    .del_btn {
+        position: absolute;
+        color: #d3a79f;
+        font-size: 30px;
+        right: 20px;
+        display: none;
+    }
+
+    li:hover {
+        .del_btn {}
+    }
+
+    input[type='text'] {
+        height: 65px;
+        width: 400px;
+        margin-left: 60px;
+        outline-style: none;
+        border: none;
+        font-size: 20px;
+    }
+
+    input::-webkit-input-placeholder {
+
+        font-style: italic;
+        font-size: 22px;
+        color: #e6e9ee;
+        font-weight: bold;
+
+    }
+
+    h5 {
+        width: 100%;
+        text-align: center;
+        font-weight: 500;
+        font-size: 12px;
+        color: #929497;
+        transform: scale(0.9);
+        padding-bottom: 5px;
+    }
+
+    .yy {
+        width: 26px;
+        height: 26px;
+        border: 1px solid #e2e1e1;
+        border-radius: 50%;
+        margin: 0 20px 0 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    } */
+    li {
+        font-size: 25px;
+        color: #4d4d53;
+        transition: all 0.5s inherit;
+        position: relative;
+    }
+
+    input {
+        font-size: 25px;
+    }
+
+    .li_true {
+        color: #d8d8da;
+        text-decoration: line-through;
+    }
+
+    .all_btn {
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        left: 20px;
+    }
+
+
+
+    .footer_one,
+    .footer_two {
+        width: 530px;
+        height: 3px;
+        /* margin: 0 2px; */
+        background-color: #ffffff;
+        margin: auto;
+        border-bottom: 2px solid #eeebeb;
+    }
+
+    .footer_two {
+        width: 520px;
+        background-color: #ffffff;
+    }
+
+    .footer {
+        height: 20px;
+        padding: 8px 0;
+        font-size: 13px;
+        color: #6d6d6e;
+    }
+
+    .footer b {
+        display: block;
+        height: 22px;
+        padding: 0 5px;
+        border: 1px solid rgba(175, 47, 47, 0.2);
+        line-height: 20px;
+        text-align: center;
+        font-weight: 400;
+        border-radius: 3px;
+        margin-left: 80px;
+    }
+
+    .footer a {
+        display: block;
+        height: 22px;
+        padding: 0 5px;
+        margin-left: 18px;
+        border: 1px solid rgba(172, 95, 95, 0);
+        border-radius: 3px;
+        line-height: 20px;
+        text-align: center;
+    }
+
+
+    .true {
+        border: 1px solid rgba(168, 87, 87, 0.4) !important;
+    }
+
+    .false {
+        border: 1px solid rgba(172, 95, 95, 0) !important;
+    }
+
+    .i {
+        font-style: normal;
+        display: block;
+        height: 21x;
+        height: 21px;
+        position: absolute;
+        right: 20px;
+    }
+
+    .i:hover {
+        text-decoration: underline;
+    }
+
+    li a,
+    .yy svg {
+        transition: all 0.5s !important;
+    }
+
+    h2 {
+        margin-top: 20px;
+    }
+</style>
+
+<body>
+    <div id="box">
+        <h2>todos</h2>
+        <ul>
+            <li>
+                <svg style="transition: all 0.5s !important;" @click="all" v-show="arr.length!=0" t="1690800154299"
+                    class="icon all_btn" viewBox="0 0 1603 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                    p-id="5762" width="16" height="16">
+                    <path
+                        d="M1010.042131 836.203222L837.472119 1008.773234c-18.610492 18.610492-50.755886 18.610492-71.05824 0L15.226766 255.894259c-18.610492-18.610492-18.610492-50.755886 0-71.058241L187.796778 13.957869c18.610492-18.610492 50.755886-18.610492 71.058241 0l751.187112 751.187112c18.610492 20.302354 18.610492 52.447749 0 71.058241z"
+                        p-id="5763" :fill="allflag?'#4d4d53':'#e6e6e6'"></path>
+                    <path
+                        d="M1416.089219 13.957869L1588.659232 186.527881c18.610492 18.610492 18.610492 50.755886 0 71.05824L835.780256 1008.773234c-18.610492 18.610492-50.755886 18.610492-71.05824 0L593.843866 836.203222c-18.610492-18.610492-18.610492-50.755886 0-71.058241L1346.722842 13.957869c18.610492-18.610492 50.755886-18.610492 69.366377 0z"
+                        p-id="5764" :fill="allflag?'#4d4d53':'#e6e6e6'"></path>
+                </svg>
+                <input type="text" @keydown.13="add" v-model="inpval" placeholder="What needs to be done?">
+            </li>
+            <li v-for="(item,index) in arr" :key="index">
+                <div class="yy" @click="liflag(index)">
+                    <svg v-show="item.flag" t="1690799132121" class="icon" viewBox="0 0 1024 1024" version="1.1"
+                        xmlns="http://www.w3.org/2000/svg" p-id="2291" width="22" height="22">
+                        <path
+                            d="M480 736c-8 0-16-3.2-22.4-9.6l-288-288c-12.8-12.8-12.8-32 0-44.8 12.8-12.8 32-12.8 44.8 0L480 659.2l425.6-425.6c12.8-12.8 32-12.8 44.8 0 12.8 12.8 12.8 32 0 44.8l-448 448C496 732.8 488 736 480 736z"
+                            fill="#60c3b0" p-id="2292"></path>
+                    </svg>
+                </div>
+
+                <a :style="item.flag?li_true:''">{{item.title}}</a>
+                <b class="del_btn" @click="del(index)">×</b>
+            </li>
+            <li class="footer" v-show="foo_flag">
+                <span style="margin-left: 20px;">剩余&nbsp;{{sheng}}&nbsp;件</span>
+                <b @click="ywc(0)" :class="arrflag.one==true?'true':'false'">所有</b>
+                <a @click="ywc(1)" :class="arrflag.two==true?'true':'false'">活动</a>
+                <a @click="ywc(2)" :class="arrflag.three==true?'true':'false'">已完成</a>
+                <i v-show="r_flag" class="i" @click="qcywc">清除已完成</i>
+            </li>
+
+        </ul>
+        <div class="footer_one" v-show="foo_flag"></div>
+        <div class="footer_two" v-show="foo_flag"></div>
+        <h5 style="margin-top: 60px;">
+            Double-click to edit a todo
+        </h5>
+        <h5>
+            Written by Evan You
+        </h5>
+        <h5>
+            Part of TodoMVC
+        </h5>
+    </div>
+</body>
+<script src="../vue.js"></script>
+<script>
+    new Vue({
+        el: '#box',
+        data: {
+            inpval: '',
+            arr: JSON.parse(localStorage.getItem('arr')),
+            allflag: false,
+            r_flag: false,
+            foo_flag: true,
+            arrflag: {
+                one: true,
+                two: false,
+                three: false,
+            },
+            li_true: {
+                'color': '#d8d8da',
+                'text-decoration': 'line-through'
+            }
+        },
+        computed: {
+            sheng() {
+                let num = 0
+                this.arr.forEach(item => {
+                    if (item.flag == false) {
+                        num++
+                    }
+                })
+                return num
+            }
+        },
+        mounted() {
+            let a = JSON.parse(localStorage.getItem('arr'))
+            console.log(a);
+            let all = 0
+
+            if (a === null) {
+                this.arr = []
+                localStorage.setItem('arr', JSON.stringify(this.arr))
+
+            } else {
+                this.arr = JSON.parse(localStorage.getItem('arr'))
+                a.some(item => {
+                    if (item.flag == true) {
+                        all++
+                    }
+                })
+                if (all == a.length) {
+                    this.allflag = true
+                }
+                let n = a.some(item => item.flag == true)
+
+                if (n) {
+                    this.r_flag = true
+                }
+            }
+            if (a.length == 0) {
+                this.foo_flag = false
+            }
+            // if (a.length != 0) {
+            //     this.arr = a
+            // }
+            // localStorage.setItem('arr', JSON.stringify(this.arr))
+            // let obj = {
+            //     flag: false,
+            //     title: '222'
+            // }
+            // this.arr.push(obj)
+            // localStorage.setItem('arr', JSON.stringify(this.arr))
+        },
+        methods: {
+            ywc(num) {
+                let value = JSON.parse(localStorage.getItem('arr'))
+                if (num == 2) {
+                    this.arrflag.three = true;
+                    this.arrflag.one = false;
+                    this.arrflag.two = false;
+                    this.arr = value.filter(item => item.flag == true)
+
+                    // this.arr = this.arr.filter(item => item.flag == true)
+                } else if (num == 1) {
+                    this.arrflag.three = false;
+                    this.arrflag.one = false;
+                    this.arrflag.two = true;
+                    this.arr = value.filter(item => item.flag == false)
+                } else if (num == 0) {
+                    this.arrflag.three = false;
+                    this.arrflag.one = true;
+                    this.arrflag.two = false;
+                    this.arr = value
+                }
+                // if (num == 1) {
+                //     this.arr = this.arr.filter(item => item.flag == false)
+                // }
+            },
+            //清除已完成
+            qcywc() {
+                let a = []
+                this.arr.forEach(item => {
+                    if (!item.flag) {
+                        a.push(item)
+                    }
+                })
+                console.log(a);
+                this.arr = a
+                // console.log(a);
+                // console.log(this.arr);
+                localStorage.setItem('arr', JSON.stringify(a))
+            },
+            //li选中状态
+            liflag(index) {
+                this.arr[index].flag = !this.arr[index].flag;
+                localStorage.setItem('arr', JSON.stringify(this.arr))
+                //判断是有选中的li
+                let a = this.arr.filter(item => item.flag == true)
+                if (a.length != 0) {
+                    this.r_flag = true
+                } else {
+                    this.r_flag = false
+                }
+                //判断是否有可以清除的li
+                if (a.length == this.arr.length) {
+                    this.allflag = true
+                } else {
+                    this.allflag = false
+                }
+            },
+            //添加
+            add() {
+                this.allflag = false
+                if (this.inpval.length != 0) {
+                    let obj = {
+                        flag: false,
+                        title: this.inpval
+                    }
+                    this.arr.push(obj);
+                    this.foo_flag = true
+                    // localStorage.setItem('bwl', JSON.stringify(arr))
+                    localStorage.setItem('arr', JSON.stringify(this.arr))
+
+                }
+                this.inpval = '';
+
+            },
+            //删除
+            del(index) {
+                // let value = this.arr[index]
+                // localStorage.removeItem(value)
+                this.arr.splice(index, 1);
+                localStorage.setItem('arr', JSON.stringify(this.arr))
+
+
+                let a = this.arr.filter(item => item.flag == true)
+                if (a.length != 0) {
+                    this.r_flag = true
+                } else {
+                    this.r_flag = false
+                }
+
+
+            },
+            //全选
+            all() {
+                this.allflag = !this.allflag
+                this.arr.forEach((item, index) => {
+                    item.flag = this.allflag;
+                })
+                localStorage.setItem('arr', JSON.stringify(this.arr))
+                //判断是有选中的li
+                let a = this.arr.filter(item => item.flag == true)
+                if (a.length != 0) {
+                    this.r_flag = true
+                } else {
+                    this.r_flag = false
+                }
+
+            }
+
+        }
+    })
+</script>
+
+</html>
