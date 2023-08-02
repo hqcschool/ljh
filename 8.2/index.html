@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    * {
+        padding: 0;
+        margin: 0;
+    }
+
+    body {
+        width: 100%;
+        height: 100vh;
+        background-color: #2e95fd;
+    }
+
+    #box {
+        width: 100%;
+        height: 761px;
+    }
+
+    .cj_box {
+        width: 500px;
+        height: 520px;
+        /* background-color: #2e95fd; */
+        border-radius: 20px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-30%, -60%);
+        /* box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); */
+        /* border: 10px solid white; */
+        padding: 5px;
+        /* overflow: hidden; */
+        animation: changeBg .5s ease infinite;
+        background-size: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    @keyframes changeBg {
+        0% {
+            background-image: url(./imgs/bk1.png);
+        }
+
+        100% {
+            background-image: url(./imgs/bk2.png);
+        }
+
+    }
+
+    .cj_box ul {
+        width: 450px;
+        height: 450px;
+        list-style: none;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+        align-content: space-around;
+    }
+
+    .cj_box ul li {
+        width: 30%;
+        height: 30%;
+        background-color: white;
+        border-radius: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .cj_box ul li img {
+        width: 100px;
+        height: 90px;
+    }
+
+    li a {
+        font-size: 30px;
+    }
+
+    .bk {
+        background-color: #ff3a59 !important;
+        color: white !important;
+    }
+</style>
+
+<body>
+    <div id="box">
+        <div class="cj_box">
+            <ul>
+                <li v-for="item in arr.slice(0,4)" :key="item.id" :class="item.flag?'bk':''">
+                    <img :src="item.img" alt="">
+                    <b>{{item.title}}</b>
+                </li>
+                <li style="background-color: #ff3a59;color: white;" @click="start()">
+                    <a>开始!</a>
+                    <b>消耗十积分</b>
+                </li>
+                <li v-for="item in arr.slice(4,8)" :key="item.id" :class="item.flag?'bk':''">
+                    <img :src="item.img" alt="">
+                    <b>{{item.title}}</b>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+<script src="../vue.js"></script>
+<script>
+    new Vue({
+        el: '#box',
+        data: {
+            index: 0,
+            setflag: true,
+            num: 0,
+            twonum: 0,
+            threenum: 0,
+            dsq: null,
+            yynum: 0,
+            arr: [
+                {
+                    id: 1,
+                    img: './imgs/true.png',
+                    title: '美女一个',
+                    flag: false
+                },
+                {
+                    id: 8,
+                    img: './imgs/true.png',
+                    title: '鸭梨14一个',
+                    flag: false
+                },
+                {
+                    id: 7,
+                    img: './imgs/bigtrue.png',
+                    title: '法拉利一辆',
+                    flag: false
+                },
+                {
+                    id: 2,
+                    img: './imgs/true.png',
+                    title: '牛奶一箱',
+                    flag: false
+                },
+                {
+                    id: 6,
+                    img: './imgs/false.png',
+                    title: '鸡蛋一蓝',
+                    flag: false
+                },
+                {
+                    id: 3,
+                    img: './imgs/true.png',
+                    title: '一束鲜花',
+                    flag: false
+                },
+                {
+                    id: 4,
+                    img: './imgs/bigfalse.png',
+                    title: '谢谢参与',
+                    flag: false
+                },
+                {
+                    id: 5,
+                    img: './imgs/false.png',
+                    title: '一个西瓜',
+                    flag: false
+                },
+
+            ]
+        },
+        methods: {
+            start() {
+                if (this.setflag) {
+                    this.setflag = false
+                    this.twonum = this.numfun()
+                    this.yynum = this.foonum()
+                    console.log(this.yynum);
+                    this.dsq = setInterval(() => {
+                        this.fun()
+                    }, 200)
+
+
+                }
+
+            },
+            fun() {
+                this.index++
+                this.num++
+                if (this.index > this.arr.length) {
+                    this.index = 1
+                }
+                //
+                this.arr.forEach((item, index) => {
+                    if (item.id == this.index) {
+                        // num++
+                        item.flag = true;
+                    } else {
+                        item.flag = false;
+                    }
+                })
+                console.log(this.num, this.twonum);
+                if (this.num > this.twonum / 9) {
+                    // this.threenum = this.num
+                    clearInterval(this.dsq)
+                    this.dsq = setInterval(() => {
+                        this.fun()
+                    }, 80)
+                }
+                if (this.num > (this.twonum - this.yynum)) {
+                    // this.threenum = this.num
+                    clearInterval(this.dsq)
+                    this.dsq = setInterval(() => {
+                        this.fun()
+                    }, 500)
+                }
+
+                if (this.num == this.twonum) {
+                    let yy = ''
+                    this.arr.filter(item => {
+                        // console.log(item.flag, item.title);
+                        if (item.flag == true) {
+                            yy = item.title
+                        }
+                    })
+                    clearInterval(this.dsq)
+                    setTimeout(() => {
+                        alert('恭喜您获得' + yy)
+                    }, 1500)
+
+                    this.setflag = true
+                    this.num = 0
+                }
+
+
+            },
+            foonum() {
+                const min = 4;
+                const max = 6;
+                const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+                return randomNumber;
+            },
+
+            // 随机数停止的数量
+            numfun() {
+                const randomNum = Math.random() * 41;
+
+                // 将随机数加上 80，得到一个介于 80 到 120 之间的随机数
+                const result = randomNum + 80;
+
+                // 将结果取整并返回
+                return Math.floor(result);
+            }
+        }
+    })
+</script>
+
+</html>
