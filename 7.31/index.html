@@ -199,6 +199,16 @@
     h2 {
         margin-top: 20px;
     }
+
+    .n {
+        border: 1px solid black !important;
+        outline-style: auto;
+        padding: 0;
+        margin: 0 !important;
+        height: 30px !important;
+        width: auto !important;
+        padding: 0 20px 0 0;
+    }
 </style>
 
 <body>
@@ -218,7 +228,7 @@
                 </svg>
                 <input type="text" @keydown.13="add" v-model="inpval" placeholder="What needs to be done?">
             </li>
-            <li v-for="(item,index) in arr" :key="index">
+            <li v-for="(item,index) in arr" :key="index" @dblclick="bj(index)">
                 <div class="yy" @click="liflag(index)">
                     <svg v-show="item.flag" t="1690799132121" class="icon" viewBox="0 0 1024 1024" version="1.1"
                         xmlns="http://www.w3.org/2000/svg" p-id="2291" width="22" height="22">
@@ -228,7 +238,9 @@
                     </svg>
                 </div>
 
-                <a :style="item.flag?li_true:''">{{item.title}}</a>
+                <a v-show="!item.bjflag" :style="item.flag?li_true:''">{{item.title}}</a>
+                <input type="text" @keyup.enter="bjfun(index)" @blur="qxbjfun(index)" v-model=" bian_value"
+                    v-show="item.bjflag" class="n" autofocus="true">
                 <b class="del_btn" @click="del(index)">×</b>
             </li>
             <li class="footer" v-show="foo_flag">
@@ -252,9 +264,15 @@
             Part of TodoMVC
         </h5>
     </div>
+
 </body>
 <script src="../vue.js"></script>
 <script>
+
+    function fun() {
+        const inp = document.getElementsByClassName('n')[0]
+        console.log(inp);
+    }
     new Vue({
         el: '#box',
         data: {
@@ -271,7 +289,8 @@
             li_true: {
                 'color': '#d8d8da',
                 'text-decoration': 'line-through'
-            }
+            },
+            bian_value: ''
         },
         computed: {
             sheng() {
@@ -286,16 +305,23 @@
         },
         mounted() {
             let a = JSON.parse(localStorage.getItem('arr'))
-            console.log(a);
             let all = 0
+
 
             if (a === null) {
                 this.arr = []
+                // let obj = {
+                //     bjflag: false,
+                //     flag: false,
+                //     title: '222'
+                // }
+                // this.arr.push(obj)
                 localStorage.setItem('arr', JSON.stringify(this.arr))
 
             } else {
                 this.arr = JSON.parse(localStorage.getItem('arr'))
                 a.some(item => {
+                    item.bjflag = false
                     if (item.flag == true) {
                         all++
                     }
@@ -312,18 +338,32 @@
             if (a.length == 0) {
                 this.foo_flag = false
             }
-            // if (a.length != 0) {
-            //     this.arr = a
-            // }
-            // localStorage.setItem('arr', JSON.stringify(this.arr))
-            // let obj = {
-            //     flag: false,
-            //     title: '222'
-            // }
-            // this.arr.push(obj)
-            // localStorage.setItem('arr', JSON.stringify(this.arr))
         },
         methods: {
+            qxbjfun(index) {
+                // console.log(this.arr[index]);
+                this.arr[index].bjflag = false
+                this.bian_value = ''
+            },
+            bjfun(index) {
+                this.arr[index].title = this.bian_value
+                this.arr[index].bjflag = false
+            },
+            //编辑
+            bj(indexs) {
+                fun()
+                this.bian_value = this.arr[indexs].title
+                this.arr.forEach((item, index) => {
+                    if (index != indexs) {
+                        item.bjflag = false
+                    } else {
+                        item.bjflag = true
+                    }
+                })
+
+
+
+            },
             ywc(num) {
                 let value = JSON.parse(localStorage.getItem('arr'))
                 if (num == 2) {
@@ -385,6 +425,7 @@
                 this.allflag = false
                 if (this.inpval.length != 0) {
                     let obj = {
+                        bjflag: false,
                         flag: false,
                         title: this.inpval
                     }
