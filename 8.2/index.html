@@ -31,7 +31,7 @@
         position: absolute;
         left: 50%;
         top: 50%;
-        transform: translate(-30%, -60%);
+        transform: translate(-50%, -50%);
         /* box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04); */
         /* border: 10px solid white; */
         padding: 5px;
@@ -73,6 +73,9 @@
         flex-direction: column;
         align-items: center;
         justify-content: space-around;
+        box-shadow: 2px 2px 10px white;
+        font-weight: 900;
+        transition: all 0.1s linear;
     }
 
     .cj_box ul li img {
@@ -87,6 +90,11 @@
     .bk {
         background-color: #ff3a59 !important;
         color: white !important;
+        box-shadow: 2px 2px 10px #ff3a59 !important;
+    }
+
+    .ny {
+        background-color: #f71f3f !important;
     }
 </style>
 
@@ -98,10 +106,15 @@
                     <img :src="item.img" alt="">
                     <b>{{item.title}}</b>
                 </li>
-                <li style="background-color: #ff3a59;color: white;" @click="start()">
-                    <a>开始!</a>
-                    <b>消耗十积分</b>
+                <li :class="!setflag?'ny':''"
+                    style="background-color: #ff3a59;color: white;box-shadow: none !important;" @click="start()">
+                    <a v-show="setflag">开始!</a>
+                    <b v-show="setflag">消耗十积分</b>
+                    <b v-show="!setflag">抽奖中...</b>
                 </li>
+
+
+                </el-button>
                 <li v-for="item in arr.slice(4,8)" :key="item.id" :class="item.flag?'bk':''">
                     <img :src="item.img" alt="">
                     <b>{{item.title}}</b>
@@ -125,42 +138,42 @@
             arr: [
                 {
                     id: 1,
-                    img: './imgs/true.png',
+                    img: './imgs/bigfalse.png',
                     title: '美女一个',
-                    flag: false
-                },
-                {
-                    id: 8,
-                    img: './imgs/true.png',
-                    title: '鸭梨14一个',
-                    flag: false
-                },
-                {
-                    id: 7,
-                    img: './imgs/bigtrue.png',
-                    title: '法拉利一辆',
                     flag: false
                 },
                 {
                     id: 2,
                     img: './imgs/true.png',
+                    title: '鸭梨14一个',
+                    flag: false
+                },
+                {
+                    id: 3,
+                    img: './imgs/bigtrue.png',
+                    title: '法拉利一辆',
+                    flag: false
+                },
+                {
+                    id: 8,
+                    img: './imgs/true.png',
                     title: '牛奶一箱',
                     flag: false
                 },
                 {
-                    id: 6,
+                    id: 4,
                     img: './imgs/false.png',
                     title: '鸡蛋一蓝',
                     flag: false
                 },
                 {
-                    id: 3,
+                    id: 7,
                     img: './imgs/true.png',
                     title: '一束鲜花',
                     flag: false
                 },
                 {
-                    id: 4,
+                    id: 6,
                     img: './imgs/bigfalse.png',
                     title: '谢谢参与',
                     flag: false
@@ -231,7 +244,7 @@
                     clearInterval(this.dsq)
                     setTimeout(() => {
                         alert('恭喜您获得' + yy)
-                    }, 1500)
+                    }, 1000)
 
                     this.setflag = true
                     this.num = 0
